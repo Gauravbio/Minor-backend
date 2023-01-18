@@ -7,7 +7,7 @@ const {connectDatabase}=require("./config/db");
 connectDatabase();
 
 app.get('/',(req,res)=>{
-    req.send("Hello world")
+    res.send("Hello world")
 })
 
 app.listen(process.env.PORT,()=> {
