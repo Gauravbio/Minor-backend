@@ -6,6 +6,10 @@ const app=require('./app');
 const {connectDatabase}=require("./config/db");
 connectDatabase();
 
+app.get('/',(req,res)=>{
+    req.send("Hello world")
+})
+
 app.listen(process.env.PORT,()=> {
     console.log(`server is running at http://localhost:${process.env.PORT}`);
 })
