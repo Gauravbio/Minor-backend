@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const User=require("../models/User")
 const {generateToken, matchPassword}=require("../utils/auth");
 
@@ -59,6 +60,25 @@ exports.login=async (req,res)=> {
             user:exist,
             token
         })        
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:error.message
+        })
+    }
+}
+
+exports.myProfile=async (req,res)=> {
+    try {
+        const {token}=req.body;
+
+        const {_id}=await jwt.verify(token,process.env.JWT_SECRET)
+        const user=await User.findById(_id);
+
+        return res.status(200).json({
+            success:true,
+            user
+        })
     } catch (error) {
         return res.status(500).json({
             success:false,
