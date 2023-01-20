@@ -22,6 +22,7 @@ exports.signup=async (req,res) => {
         const token=await generateToken(newUser);
         return res.status(201).json({
             success:true,
+            message:"registered successfully",
             newUser,
             token
         })
@@ -48,15 +49,16 @@ exports.login=async (req,res)=> {
 
         const isMatched=await matchPassword(password,exist.password);
         if(!isMatched) {
-            return req.status({
+            return res.status(401).json({
                 success:false,
-                message:"invalid password"
+                message:"incorrect password"
             })
         }
 
         const token=await generateToken(exist);
         return res.status(200).json({
             success:true,
+            message:"Loggedin successfully",
             user:exist,
             token
         })        
@@ -71,6 +73,12 @@ exports.login=async (req,res)=> {
 exports.myProfile=async (req,res)=> {
     try {
         const {token}=req.body;
+        if(token===null) {
+            return res.status(400).json({
+                success:false,
+                message:"Please Login"
+            })
+        }
 
         const {_id}=await jwt.verify(token,process.env.JWT_SECRET)
         const user=await User.findById(_id);
