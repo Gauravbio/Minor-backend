@@ -20,7 +20,7 @@ const sendEmail=async (email,message)=> {
 
     await new Promise((resolve, reject) => {
         // send mail
-        transporter.sendMail(mailData, (err, info) => {
+        transporter.sendMail(mail, (err, info) => {
             if (err) {
                 console.error(err);
                 reject(err);

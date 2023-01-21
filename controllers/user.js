@@ -121,7 +121,6 @@ exports.forgotPassword = async (req, res) => {
 
     try {
       await sendEmail(email, message);
-        console.log(resetPasswordToken)
       return res.status(200).json({
         success: true,
         message: "Email Sent",
