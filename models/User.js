@@ -16,9 +16,30 @@ const userSchema=new mongoose.Schema({
         type:String,
         default:"user"
     },
-    playlists:[
+    recents:[
         {
-            url:String,
+            album:{
+                images:[
+                  {
+                    url:String
+                  }
+                ]
+              },
+            name:String,
+            preview_url:String,
+        }
+    ],
+    favourites:[
+        {
+            album:{
+                images:[
+                  {
+                    url:String
+                  }
+                ]
+              },
+            name:String,
+            preview_url:String,
         }
     ],
     resetPasswordToken:String,

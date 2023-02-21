@@ -7,6 +7,7 @@ const {
   getResetPasswordToken,
 } = require("../utils/auth");
 const sendEmail = require("../utils/sendEmail");
+const {PythonShell}=require('python-shell')
 
 //expire karo
 
@@ -182,3 +183,93 @@ exports.resetPassword = async (req,res) => {
     });
   }
 };
+
+
+exports.emotionDetection=async (req,res)=> {
+  try {
+    const {image}=req.body;
+    const options={
+      args:[image]
+    }
+
+    let output;
+    await PythonShell.run('main.py',options,(err,result)=> {
+      if(err) {
+        res.status(400).json({
+          err
+        })
+      }
+      if(result) {
+        output=result;
+      }
+    })
+    res.status(200).json({output})
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
+exports.recentlyPlayed=async (req,res)=> {
+  try {
+    const {song,userId}=req.body;
+
+    const user=await User.findById(userId);
+
+    if(!user) {
+      return res.status(400).json({
+        success:false,
+        message:"Please Login"
+      })
+    }
+
+    user.recents.unshift({
+      album:song.album,
+      name:song.name,
+      preview_url:song.preview_url
+    });
+
+    await user.save();
+    return res.status(200).json({
+      success:true,
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
+
+exports.favourites=async (req,res)=> {
+  try {
+    const {song,userId}=req.body;
+
+    const user=await User.findById(userId);
+    if(!user) {
+      return res.status(400).json({
+        success:false,
+        message:"Please Login"
+      })
+    }
+
+    user.favourites.unshift({
+      album:song.album,
+      name:song.name,
+      preview_url:song.preview_url
+    })
+
+    await user.save();
+    return res.status(200).json({
+      success:true,
+      message:"Added to favourites"
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+}
