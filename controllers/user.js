@@ -187,23 +187,28 @@ exports.resetPassword = async (req,res) => {
 
 exports.emotionDetection=async (req,res)=> {
   try {
-    const {image}=req.body;
-    const options={
-      args:[image]
-    }
+    let {image}=req.body;
+    image=image.slice(22);
 
-    let output;
-    await PythonShell.run('main.py',options,(err,result)=> {
-      if(err) {
-        res.status(400).json({
-          err
-        })
-      }
-      if(result) {
-        output=result;
-      }
-    })
+  let pyshell = new PythonShell('main.py', { mode: 'text' });
+
+  pyshell.send(image)
+  let output;
+
+  await pyshell.on('message', function (message) {
+    // received a message sent from the Python script (a simple "print" statement)
+    output=message
+  });
+
+  await pyshell.end(function (err,code,signal) {
+    if (err) throw err;
+    console.log('The exit code was: ' + code);
+    console.log('The exit signal was: ' + signal);
+    console.log('finished');
     res.status(200).json({output})
+  });
+
+    // console.log("yaha");
   } catch (error) {
     return res.status(500).json({
       success: false,

@@ -1,8 +1,11 @@
-import sys
 from deepface import DeepFace
-import cv2
+import base64
+image=input()
 
-image=cv2.imread(sys.argv[0])
+decoded_image=base64.b64decode(image)
 
-result=DeepFace.analyze(image,actions=['emotion'])
+with open("out.png","wb") as out_file:
+    out_file.write(decoded_image)
+
+result=DeepFace.analyze('out.png',actions=['emotion'])
 print(result[0]['dominant_emotion'])
