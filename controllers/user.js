@@ -7,7 +7,6 @@ const {
   getResetPasswordToken,
 } = require("../utils/auth");
 const sendEmail = require("../utils/sendEmail");
-const {PythonShell}=require('python-shell')
 
 //expire karo
 
@@ -189,6 +188,9 @@ exports.emotionDetection=async (req,res)=> {
   try {
     let {image}=req.body;
     image=image.slice(22);
+    console.log("chalu kiya")
+    const {PythonShell}=require('python-shell')
+
 
   let pyshell = new PythonShell('main.py', { mode: 'text' });
 
