@@ -192,9 +192,10 @@ exports.emotionDetection=async (req,res)=> {
     const {PythonShell}=require('python-shell')
 
 
-  let pyshell = new PythonShell('main.py', { mode: 'text' });
-
+  let pyshell = new PythonShell('main.py', { mode: 'text',pythonPath:"@vercel/python" });
+  console.log("shell bnaya");
   pyshell.send(image)
+  console.log("input diya");
   let output;
 
   await pyshell.on('message', function (message) {
@@ -205,7 +206,6 @@ exports.emotionDetection=async (req,res)=> {
   await pyshell.end(function (err,code,signal) {
     if (err) throw err;
     console.log('The exit code was: ' + code);
-    console.log('The exit signal was: ' + signal);
     console.log('finished');
     res.status(200).json({output})
   });
