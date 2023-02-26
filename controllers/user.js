@@ -183,42 +183,6 @@ exports.resetPassword = async (req,res) => {
   }
 };
 
-
-exports.emotionDetection=async (req,res)=> {
-  try {
-    let {image}=req.body;
-    image=image.slice(22);
-    console.log("chalu kiya")
-    const {PythonShell}=require('python-shell')
-
-
-  let pyshell = new PythonShell('main.py', { mode: 'text',pythonPath:"@vercel/python" });
-  console.log("shell bnaya");
-  pyshell.send(image)
-  console.log("input diya");
-  let output;
-
-  await pyshell.on('message', function (message) {
-    // received a message sent from the Python script (a simple "print" statement)
-    output=message
-  });
-
-  await pyshell.end(function (err,code,signal) {
-    if (err) throw err;
-    console.log('The exit code was: ' + code);
-    console.log('finished');
-    res.status(200).json({output})
-  });
-
-    // console.log("yaha");
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-}
-
 exports.recentlyPlayed=async (req,res)=> {
   try {
     const {song,userId}=req.body;
