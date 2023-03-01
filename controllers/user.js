@@ -196,7 +196,7 @@ exports.recentlyPlayed=async (req,res)=> {
       })
     }
 
-    user.recents.unshift({
+    await user.recents.unshift({
       album:song.album,
       name:song.name,
       preview_url:song.preview_url
@@ -226,7 +226,7 @@ exports.favourites=async (req,res)=> {
       })
     }
 
-    user.favourites.unshift({
+    await user.favourites.unshift({
       album:song.album,
       name:song.name,
       preview_url:song.preview_url

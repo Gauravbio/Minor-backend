@@ -8,6 +8,6 @@ router.post("/me",myProfile);
 router.post("/forgot",forgotPassword);
 router.post('/reset',resetPassword);
 router.post('/recent',recentlyPlayed);
-router.post('/favorite',favourites);
+router.post('/favourite',favourites);
 
 module.exports=router;
